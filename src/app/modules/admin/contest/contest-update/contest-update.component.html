@@ -1,0 +1,217 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+            <!-- Breadcrumbs -->
+            <div>
+                <div class="hidden sm:flex flex-wrap items-center font-medium">
+                    <div>
+                        <a class="whitespace-nowrap text-primary-500">Administration</a>
+                    </div>
+                    <div class="flex items-center ml-1 whitespace-nowrap">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_mini:chevron-right'"></mat-icon>
+                        <a class="ml-1 text-primary-500">Contests</a>
+                    </div>
+                    <div class="flex items-center ml-1 whitespace-nowrap">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_mini:chevron-right'"></mat-icon>
+                        <span class="ml-1 text-secondary">{{_title}}</span>
+                    </div>
+                </div>
+                <div class="flex sm:hidden">
+                    <a
+                        class="inline-flex items-center -ml-1.5 text-secondary font-medium"
+                        [routerLink]="'./..'">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-left'"></mat-icon>
+                        <span class="ml-1">Back</span>
+                    </a>
+                </div>
+            </div>
+            <!-- Title -->
+            <div class="mt-2">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                    Contests
+                </h2>
+            </div>
+        </div>
+        <!-- Actions -->
+        <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+            <button mat-stroked-button>
+                <mat-icon
+                    class="icon-size-4"
+                    [svgIcon]="'heroicons_mini:pencil-square'"></mat-icon>
+                <span class="ml-2">Edit</span>
+            </button>
+            <button
+                class="ml-3"
+                mat-flat-button
+                [color]="'accent'">
+                <mat-icon
+                    class="icon-size-4"
+                    [svgIcon]="'heroicons_mini:link'"></mat-icon>
+                <span class="ml-2">View</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex-auto p-6 sm:p-7 overflow-y-auto" cdkScrollable>
+
+        <mat-stepper #stepper>
+            <mat-step #step1 [stepControl]="_contestFormGroup" errorMessage="Please provide valid inputs."
+                    [hasError]="step1.interacted">
+                <form [formGroup]="_contestFormGroup" class="mt-2">
+                    <ng-template matStepLabel>Contest Details</ng-template>
+                    <div class="flex flex-row items-start">
+                        <div class="w-1/2 mr-4 flex flex-col p-4 pb-6 bg-card shadow rounded">
+                            <mat-form-field class="fuse-mat-dense flex-auto">
+                                <mat-label>Name</mat-label>
+                                <input matInput formControlName="name" maxlength="50" required>
+                                <mat-error>
+                                    Please provide valid input for contest name.
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="fuse-mat-dense flex-auto">
+                                <mat-label>Status</mat-label>
+                                <mat-select formControlName="status" required>
+                                    <mat-option value="Open" selected>Open</mat-option>
+                                    <mat-option value="Closed">Closed</mat-option>
+                                    <mat-option value="ReviewInProgress">Review In Progress</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field class="fuse-mat-dense flex-auto">
+                                <mat-label>Registration Start Date</mat-label>
+                                <input matInput [matDatepicker]="picker1" formControlName="registrationStartDate">
+                                <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                            </mat-form-field>
+
+                            <mat-form-field class="fuse-mat-dense flex-auto">
+                                <mat-label>Registration End Date</mat-label>
+                                <input matInput [matDatepicker]="picker2" formControlName="registrationEndDate">
+                                <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+                                <mat-datepicker #picker2></mat-datepicker>
+                            </mat-form-field>
+
+                            <mat-checkbox color="primary" formControlName="internationalContest">
+                                Is this an international contest?
+                            </mat-checkbox>
+                            
+                            <mat-checkbox color="primary" formControlName="pastAcceptedImagesAllowed">
+                                Are past accepted images allowed?
+                            </mat-checkbox>
+                        </div>
+
+                        <div class="w-1/2 mr-4 flex flex-col p-4 pb-6 bg-card shadow rounded">
+                            <mat-form-field class="fuse-mat-dense flex-auto">
+                                <mat-label>Maximum Picture Width (pixels)</mat-label>
+                                <input matInput formControlName="maxImageWidthAccepted" maxlength="5" required>
+                                <mat-error>
+                                    Please provide valid input for maximum picture width.
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="fuse-mat-dense flex-auto">
+                                <mat-label>Maximum Picture Height (pixels)</mat-label>
+                                <input matInput formControlName="maxImageHeightAccepted" maxlength="5" required>
+                                <mat-error>
+                                    Please provide valid input for maximum picture height.
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="fuse-mat-dense flex-auto">
+                                <mat-label>Maximum File Size (MB)</mat-label>
+                                <input matInput formControlName="maxFileSize" maxlength="3" required>
+                                <mat-error>
+                                    Please provide valid input for maximum file size.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-left mt-6">
+                        <button mat-flat-button matStepperNext [color]="'primary'">
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:arrow-right'"></mat-icon>
+                            <span class="ml-2">Next</span>
+                        </button>
+                    </div>
+                </form>
+            </mat-step>
+
+            <mat-step #step2 [stepControl]="_judgingFormGroup" errorMessage="Please provide valid inputs."
+                    [hasError]="step2.interacted">
+                <form [formGroup]="_judgingFormGroup" class="mt-2">
+                    <ng-template matStepLabel>Judging</ng-template>
+                    <div class="w-1/2 mr-4 flex flex-col p-4 pb-6 bg-card shadow rounded">
+                        <mat-form-field class="fuse-mat-dense flex-auto">
+                            <mat-label>Juding Start Date</mat-label>
+                            <input matInput [matDatepicker]="picker3" formControlName="judgingStartDate">
+                            <mat-datepicker-toggle matIconSuffix [for]="picker3"></mat-datepicker-toggle>
+                            <mat-datepicker #picker3></mat-datepicker>
+                        </mat-form-field>
+
+                        <mat-form-field class="fuse-mat-dense flex-auto">
+                            <mat-label>Judging End Date</mat-label>
+                            <input matInput [matDatepicker]="picker4" formControlName="judgingEndDate">
+                            <mat-datepicker-toggle matIconSuffix [for]="picker4"></mat-datepicker-toggle>
+                            <mat-datepicker #picker4></mat-datepicker>
+                        </mat-form-field>
+
+                        <mat-form-field class="fuse-mat-dense flex-auto">
+                            <mat-label>Results Date</mat-label>
+                            <input matInput [matDatepicker]="picker5" formControlName="resultsDate" required>
+                            <mat-datepicker-toggle matIconSuffix [for]="picker5"></mat-datepicker-toggle>
+                            <mat-datepicker #picker5></mat-datepicker>
+                        </mat-form-field>
+
+                        <!-- <mat-form-field class="fuse-mat-dense flex-auto">
+                            <mat-label>Status</mat-label>
+                            <mat-select formControlName="judgingType" required>
+                                <mat-option value="Open" selected>Offline</mat-option>
+                                <mat-option value="Closed">Online</mat-option>
+                                <mat-option value="ReviewInProgress">Review In Progress</mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+                    </div>
+                    <div class="flex items-center justify-left mt-6">
+                        <button mat-flat-button matStepperPrevious [color]="'primary'">
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:arrow-left'"></mat-icon>
+                            <span class="ml-2">Previous</span>
+                        </button>
+                        <button mat-flat-button matStepperNext [color]="'primary'" class="ml-2">
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:arrow-right'"></mat-icon>
+                            <span class="ml-2">Next</span>
+                        </button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step>
+                <ng-template matStepLabel>Done</ng-template>
+                <p>Click on Submit to create or update contest.</p>
+                <div class="mt-6">
+                    <button mat-flat-button matStepperPrevious [color]="'primary'">
+                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:arrow-left'"></mat-icon>
+                        <span class="ml-2">Previous</span>
+                    </button>
+                    <button mat-flat-button (click)="submit(stepper)" [color]="'primary'" class="ml-2">
+                        <mat-icon class="icon-size-5" [svgIcon]="'feather:save'"></mat-icon>
+                        <span class="ml-2">Submit</span>
+                    </button>
+                    <button mat-flat-button (click)="stepper.reset()" [color]="'primary'" class="ml-2">
+                        <mat-icon class="icon-size-5" svgIcon="feather:refresh-ccw"></mat-icon>
+                        <span class="ml-2">Reset</span>
+                    </button>
+                </div>
+            </mat-step>
+        </mat-stepper>
+          
+    </div>
+
+</div>

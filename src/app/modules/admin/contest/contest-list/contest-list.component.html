@@ -1,0 +1,100 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+            <!-- Breadcrumbs -->
+            <div>
+                <div class="hidden sm:flex flex-wrap items-center font-medium">
+                    <div>
+                        <a class="whitespace-nowrap text-primary-500">Administration</a>
+                    </div>
+                    <div class="flex items-center ml-1 whitespace-nowrap">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_mini:chevron-right'"></mat-icon>
+                        <a class="ml-1 text-primary-500">Contests</a>
+                    </div>
+                    <div class="flex items-center ml-1 whitespace-nowrap">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_mini:chevron-right'"></mat-icon>
+                        <span class="ml-1 text-secondary">List</span>
+                    </div>
+                </div>
+                <div class="flex sm:hidden">
+                    <a
+                        class="inline-flex items-center -ml-1.5 text-secondary font-medium"
+                        [routerLink]="'./..'">
+                        <mat-icon
+                            class="icon-size-5 text-secondary"
+                            [svgIcon]="'heroicons_solid:chevron-left'"></mat-icon>
+                        <span class="ml-1">Back</span>
+                    </a>
+                </div>
+            </div>
+            <!-- Title -->
+            <div class="mt-2">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                    Contests
+                </h2>
+            </div>
+        </div>
+        <!-- Actions -->
+        <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+            <button mat-stroked-button (click)="createContest()">
+                <mat-icon svgIcon="add"></mat-icon>
+                <span class="ml-2">New Contest</span>
+            </button>
+            <button
+                class="ml-3"
+                mat-flat-button
+                [color]="'accent'">
+                <mat-icon
+                    class="icon-size-4"
+                    [svgIcon]="'heroicons_mini:link'"></mat-icon>
+                <span class="ml-2">View</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex-auto p-6 sm:p-8 overflow-y-auto" cdkScrollable>
+
+        <!-- CONTENT GOES HERE -->
+        <div class="flex flex-wrap items-start w-full max-w-400 -m-4">
+            @for (contest of _contests; track contest) {
+            <fuse-card class="flex flex-col max-w-90 w-full p-8 pb-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex flex-col mr-6 h-10">
+                        <div class="text-2xl font-semibold leading-tight">{{ contest.name }}</div>
+                        <!-- <div class="text-secondary font-medium text-md">Travel locations</div> -->
+                    </div>
+                </div>
+                <div class="mt-6">
+                    From {{ contest.registrationStartDate | date: 'MMMM d, y' }} to {{ contest.registrationEndDate | date: 'MMMM d, y' }} <br>
+                    Status: {{ getStatusDescription(contest.status) }}
+                </div>
+                <div class="mt-3 -mx-3">
+                    <a
+                        class="px-3"
+                        mat-button
+                        [color]="'primary'"
+                        [routerLink]="['./']">
+                        View
+                    </a>
+                    <a
+                        class="px-3"
+                        mat-button
+                        [color]="'primary'"
+                        (click)="updateContest(contest)">
+                        Update
+                    </a>
+                </div>
+            </fuse-card>
+            }
+        </div>
+
+    </div>
+
+</div>
