@@ -29,7 +29,7 @@
                         <mat-icon
                             class="icon-size-5 text-secondary"
                             [svgIcon]="'heroicons_solid:chevron-left'"></mat-icon>
-                        <span class="ml-1">Back</span>
+                        <span class="ml-1">Back to Contests</span>
                     </a>
                 </div>
             </div>
@@ -42,20 +42,14 @@
         </div>
         <!-- Actions -->
         <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
-            <button mat-stroked-button>
-                <mat-icon
-                    class="icon-size-4"
-                    [svgIcon]="'heroicons_mini:pencil-square'"></mat-icon>
-                <span class="ml-2">Edit</span>
-            </button>
             <button
                 class="ml-3"
                 mat-flat-button
-                [color]="'accent'">
+                [color]="'accent'" (click)="backToContests()">
                 <mat-icon
                     class="icon-size-4"
-                    [svgIcon]="'heroicons_mini:link'"></mat-icon>
-                <span class="ml-2">View</span>
+                    [svgIcon]="'heroicons_solid:arrow-left'"></mat-icon>
+                <span class="ml-2">Back To Contetes</span>
             </button>
         </div>
     </div>
@@ -89,7 +83,7 @@
 
                             <mat-form-field class="fuse-mat-dense flex-auto">
                                 <mat-label>Registration Start Date</mat-label>
-                                <input matInput [matDatepicker]="picker1" formControlName="registrationStartDate">
+                                <input matInput [matDatepicker]="picker1" formControlName="registrationStartDate" required>
                                 <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
                                 <mat-datepicker #picker1></mat-datepicker>
                             </mat-form-field>

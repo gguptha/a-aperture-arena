@@ -148,6 +148,19 @@ export class ContestUpdateCompoment implements OnInit, OnDestroy
             }
         }
     }
+
+    /**
+     * backToContests()
+     */
+    backToContests(): void
+    {
+        if (this._contestFormGroup.dirty || this._judgingFormGroup.dirty)
+        {
+            
+        }
+        else
+            this._router.navigate(['contest-list']);
+    }
 }
 
 /**
