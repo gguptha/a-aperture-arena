@@ -15,6 +15,10 @@ import { FuseCardComponent } from '@fuse/components/card';
 import { ContestResource } from '../contest.resource';
 import { ContestService } from '../contest.service';
 import { Subscription } from 'rxjs';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { NgIf } from '@angular/common';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { SectionListCompoment } from '../section-list/section-list.component';
 
 @Component({
     selector     : 'contest-update',
@@ -22,7 +26,13 @@ import { Subscription } from 'rxjs';
     templateUrl  : './contest-update.component.html',
     encapsulation: ViewEncapsulation.None,
     imports      : [MatIconModule, RouterLink, MatButtonModule, CdkScrollable, FuseCardComponent, MatStepperModule, ReactiveFormsModule, 
-            MatFormFieldModule, MatInputModule, MatCheckboxModule, MatSelectModule, MatDatepickerModule]
+            MatFormFieldModule, MatInputModule, MatCheckboxModule, MatSelectModule, MatDatepickerModule, NgIf, SectionListCompoment],
+    providers: [
+        {
+            provide: STEPPER_GLOBAL_OPTIONS,
+            useValue: { showError: true }
+        }
+    ]
 })
 export class ContestUpdateCompoment implements OnInit, OnDestroy
 {
@@ -38,8 +48,8 @@ export class ContestUpdateCompoment implements OnInit, OnDestroy
     /**
      * Constructor
      */
-    constructor(private _router: Router, private _formBuilder: FormBuilder, private _contestService: ContestService, 
-        private _matSnackBar: MatSnackBar) 
+    constructor(public _router: Router, private _formBuilder: FormBuilder, public _contestService: ContestService, 
+        private _matSnackBar: MatSnackBar, private _fuseConfirmationService: FuseConfirmationService) 
     {
         this._subscription = _contestService._selectedContest.subscribe(data => {
             if (data != null)
@@ -121,7 +131,7 @@ export class ContestUpdateCompoment implements OnInit, OnDestroy
                 contestResource.judging.judgingEndDate = judgingFormValue.judgingEndDate;
                 contestResource.judging.resultsDate = judgingFormValue.resultsDate;
 
-                this._contestService.createContest(contestResource).subscribe(response => {
+                this._contestService.createResource({body: contestResource}).subscribe(response => {
                     this._matSnackBar.open('Contest created successfully.', 'OK', { duration: 7000 });
                     stepper.reset();
                 });
@@ -141,10 +151,14 @@ export class ContestUpdateCompoment implements OnInit, OnDestroy
                 this._selectedContest.judging.judgingEndDate = judgingFormValue.judgingEndDate;
                 this._selectedContest.judging.resultsDate = judgingFormValue.resultsDate;
 
-                this._contestService.updateContest(this._selectedContest).subscribe(response => {
+                // if (this._contestService._sectionResources.value.length > 0)
+                //     this._selectedContest.sections = this._contestService._sectionResources.value;
+
+                this._contestService.updateResource(this._selectedContest).subscribe(response => {
+                    this._contestService._selectedContest.next(response);
                     this._matSnackBar.open('Contest updated successfully.', 'OK', { duration: 7000 });
-                    stepper.reset();
-                });                
+                    stepper.selectedIndex = 0;
+                });
             }
         }
     }
@@ -156,7 +170,14 @@ export class ContestUpdateCompoment implements OnInit, OnDestroy
     {
         if (this._contestFormGroup.dirty || this._judgingFormGroup.dirty)
         {
-            
+            // Open the confirmation and save the reference
+            const dialogRef = this._fuseConfirmationService.open({'title': 'Discard changes?', 
+                    'message': 'There are changes made to the contest. Are you sure you want to discard the changes?'});            
+            // Subscribe to afterClosed from the dialog reference
+            dialogRef.afterClosed().subscribe((result) => {
+                if (result === 'confirmed')
+                    this._router.navigate(['contest-list']);
+            });
         }
         else
             this._router.navigate(['contest-list']);

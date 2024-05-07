@@ -49,7 +49,7 @@
                 <mat-icon
                     class="icon-size-4"
                     [svgIcon]="'heroicons_solid:arrow-left'"></mat-icon>
-                <span class="ml-2">Back To Contetes</span>
+                <span class="ml-2">Back To Contests</span>
             </button>
         </div>
     </div>
@@ -59,7 +59,7 @@
 
         <mat-stepper #stepper>
             <mat-step #step1 [stepControl]="_contestFormGroup" errorMessage="Please provide valid inputs."
-                    [hasError]="step1.interacted">
+                    [hasError]="step1.interacted && !_contestFormGroup.valid">
                 <form [formGroup]="_contestFormGroup" class="mt-2">
                     <ng-template matStepLabel>Contest Details</ng-template>
                     <div class="flex flex-row items-start">
@@ -86,6 +86,9 @@
                                 <input matInput [matDatepicker]="picker1" formControlName="registrationStartDate" required>
                                 <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
                                 <mat-datepicker #picker1></mat-datepicker>
+                                <mat-error>
+                                    Please provide valid input for registration start date.
+                                </mat-error>
                             </mat-form-field>
 
                             <mat-form-field class="fuse-mat-dense flex-auto">
@@ -140,7 +143,7 @@
             </mat-step>
 
             <mat-step #step2 [stepControl]="_judgingFormGroup" errorMessage="Please provide valid inputs."
-                    [hasError]="step2.interacted">
+                    [hasError]="step2.interacted && !_judgingFormGroup.valid">
                 <form [formGroup]="_judgingFormGroup" class="mt-2">
                     <ng-template matStepLabel>Judging</ng-template>
                     <div class="w-1/2 mr-4 flex flex-col p-4 pb-6 bg-card shadow rounded">
@@ -186,6 +189,7 @@
                     </div>
                 </form>
             </mat-step>
+
             <mat-step>
                 <ng-template matStepLabel>Done</ng-template>
                 <p>Click on Submit to create or update contest.</p>
@@ -196,9 +200,10 @@
                     </button>
                     <button mat-flat-button (click)="submit(stepper)" [color]="'primary'" class="ml-2">
                         <mat-icon class="icon-size-5" [svgIcon]="'feather:save'"></mat-icon>
-                        <span class="ml-2">Submit</span>
+                        <span class="ml-2">Save</span>
                     </button>
-                    <button mat-flat-button (click)="stepper.reset()" [color]="'primary'" class="ml-2">
+                    <button mat-flat-button (click)="stepper.reset()" [color]="'primary'" class="ml-2" 
+                            *ngIf="_router.url === '/contest-create'">
                         <mat-icon class="icon-size-5" svgIcon="feather:refresh-ccw"></mat-icon>
                         <span class="ml-2">Reset</span>
                     </button>

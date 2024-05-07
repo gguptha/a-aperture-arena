@@ -6,7 +6,8 @@ export const contestDataResolver = () =>
 {
     const contestService = inject(ContestService);
 
-    return forkJoin([
-        contestService.getContests()
+    return forkJoin
+    ([
+        contestService.getPage()
     ]);
 };

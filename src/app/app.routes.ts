@@ -79,6 +79,7 @@ export const appRoutes: Route[] = [
                     resolve: {initialData: contestDataResolver}},
             {path: 'contest-create', loadChildren: () => import('app/modules/admin/contest/contest-update/contest-update.routes')},
             {path: 'contest-update', loadChildren: () => import('app/modules/admin/contest/contest-update/contest-update.routes')},
+            {path: 'section-list', loadChildren: () => import('app/modules/admin/contest/section-list/section-list.routes')},
         ]
     }
 ];
